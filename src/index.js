@@ -127,7 +127,12 @@ const renderCell = ({															//design for each cell
 			})
 			let message = '';
 			if(end_of_game==0){
-				message = (whites>0) ? 'WHTE HAS WON' : 'BLACK HAS WON'						//Message for show winner
+				if(whites!=blacks){                                                                     //DRAWS
+					message = (whites>blacks) ? 'WHTE HAS WON' : 'BLACK HAS WON'						//Message for show winner	
+				}
+				else{
+					message = "IT'S A DRAW"
+				}
 				state = {
 					turn: true,
 					board: [[0,0,0,0,0,0,0,0],
