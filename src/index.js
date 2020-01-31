@@ -1,6 +1,13 @@
-const root = document.getElementById('root');
+/*
+	UNIVERSIDAD DEL VALLE DE GUATEMALA
+	OTHELLO
+	Diseño WEB
+	SAÚL CONTRERAS (SUULCODER)
 
-const renderCell = ({
+*/
+const root = document.getElementById('root');									//root element from html
+
+const renderCell = ({															//design for each cell
 	value,
 	index,
 	state
@@ -30,10 +37,10 @@ const renderCell = ({
 		piece.style.backgroundColor = 'black'
 	}
 
-	piece.onclick = () => {
+	piece.onclick = () => {														//logic of the game
 		const { board } = state;
 		if(value===2){
-			board[index[0]][index[1]] = (state.turn) ? 1 : -1;
+			board[index[0]][index[1]] = (state.turn) ? 1 : -1;					//change color and all rows of the same color
 			let control = 1;
 			let boolcontrol = (index[0]+control>0 && index[0]+control<8) ? true : false;
 			while(boolcontrol && board[index[0]+control][index[1]]!=board[index[0]][index[1]] && board[index[0]+control][index[1]]!=0 && board[index[0]+control][index[1]]!=2){
@@ -83,7 +90,7 @@ const renderCell = ({
 			catch(error){
 				console.log(error);
 			}
-			
+			//allow following cells to be used
 			if(index[0]+1>=0 && index[0]+1<8){
 				board[index[0]+1][index[1]] = (board[index[0]+1][index[1]]==0 && board[index[0]+1][index[1]]!=1 && board[index[0]+1][index[1]]!=-1) ? 2 : board[index[0]+1][index[1]];
 			}				
@@ -96,6 +103,7 @@ const renderCell = ({
 			if(index[1]-1>=0 && index[1]-1<8){
 				board[index[0]][index[1]-1] = (board[index[0]][index[1]-1]==0 && board[index[0]][index[1]-1]!=1 && board[index[0]][index[1]-1]!=-1) ? 2 : board[index[0]][index[1]-1];	
 			}
+			//change turn and count pieces in the table
 			state.turn = !state.turn;
 			let whites = 0;
 			let blacks = 0;
@@ -115,7 +123,7 @@ const renderCell = ({
 			})
 			let message = '';
 			if(end_of_game==0){
-				message = (whites>0) ? 'WHTE HAVE WON' : 'BLACK HAVE WON'
+				message = (whites>0) ? 'WHTE HAS WON' : 'BLACK HAS WON'
 				state = {
 					turn: true,
 					board: [[0,0,0,0,0,0,0,0],
@@ -128,10 +136,10 @@ const renderCell = ({
 							[0,0,0,0,0,0,0,0]
 						]
 				};
-				alert(message)
+				alert(message)//alert who won the game
 			}
 			root.innerHTML = '';
-        	render(root, state);
+        	render(root, state);//Restart the game
 		}
 	};
 	cell.appendChild(piece)
@@ -141,20 +149,35 @@ const renderCell = ({
 const render = (root, state) =>{
 	const header = document.createElement('div');
 	header.style.backgroundColor='black';
-	header.style.width = '100%';
-	header.style.height = '120px';
+	header.style.minWidth = '330px';
+	header.style.height = '175px';
+	header.style.display = 'flex';
+	header.style.flexDirection = 'column'
+	header.style.justifyContent = 'center';
+	header.style.alignItems = 'center';
+	header.style.overflow = 'auto';
 
-	const tittle = 'OTHELLO'
-	const header_tittle = document.createElement('div',{tittle}	);
+	const header_tittle = document.createElement('h1');
+	const tittle_textNode = document.createTextNode('OTHELLO')
+	header_tittle.appendChild(tittle_textNode)
 	header_tittle.style.backgroundColor = 'black'
 	header_tittle.style.color = 'white'
-	header_tittle.style.fontSize = '40px';
+	header_tittle.style.fontSize = '45px';
 	header.appendChild(header_tittle)
+
+	const author = document.createElement('h1');
+	const author_textNode = document.createTextNode('Made by: SUULCODER')
+	author.appendChild(author_textNode)
+	author.style.backgroundColor = 'black'
+	author.style.color = 'white'
+	author.style.fontSize = '10px';
+	author.style.marginBottom = '15px';
+	header.appendChild(author)
 
 	const body = document.createElement('div');
 	body.style.backgroundColor = 'black'
-	body.style.width = '100%';
-	body.style.height = '850px'
+	body.style.minWidth = '330px';
+	body.style.height = '1000px'
 	body.style.display = 'flex';
 	body.style.justifyContent = 'center';
 	body.style.marginTop = '2px';
@@ -162,8 +185,9 @@ const render = (root, state) =>{
 	const board = document.createElement('div');
 	board.style.backgroundColor = 'green'
 	board.style.width = '295px';
-	board.style.height = '295px';
-	board.style.marginTop = '50px';
+	board.style.height = '312px';
+	board.style.marginTop = '91px';
+	board.style.overflow = 'auto'
 	
 	state.board.map((row, irow) =>
 		row.map((column,icolumn) => renderCell({
@@ -197,5 +221,4 @@ const state = {
 			[0,0,0,0,0,0,0,0]
 		]
 };
-
 render(root,state);
