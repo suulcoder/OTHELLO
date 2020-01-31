@@ -43,6 +43,7 @@ const renderCell = ({															//design for each cell
 			board[index[0]][index[1]] = (state.turn) ? 1 : -1;					//change color and all rows of the same color
 			let control = 1;
 			let boolcontrol = (index[0]+control>0 && index[0]+control<8) ? true : false;
+			//check up 
 			while(boolcontrol && board[index[0]+control][index[1]]!=board[index[0]][index[1]] && board[index[0]+control][index[1]]!=0 && board[index[0]+control][index[1]]!=2){
 				board[index[0]+control][index[1]] = board[index[0]][index[1]]
 				if (index[0]+control+1>=0 && index[0]+control+1<8){
@@ -52,6 +53,7 @@ const renderCell = ({															//design for each cell
 					boolcontrol = false;
 				}
 			}
+			//check right
 			control = 1;
 			boolcontrol = (index[1]+control>0 && index[1]+control<8) ? true : false;
 			while(boolcontrol && board[index[0]][index[1]+control]!=board[index[0]][index[1]] && board[index[0]][index[1]+control]!=0 && board[index[0]][index[1]+control]!=2){
@@ -63,6 +65,7 @@ const renderCell = ({															//design for each cell
 					boolcontrol = false;
 				}
 			}
+			//check left
 			control = 1;
 			boolcontrol = (index[1]-control>0 && index[1]-control<8) ? true : false;
 			while(boolcontrol && board[index[0]][index[1]-control]!=board[index[0]][index[1]] && board[index[0]][index[1]-control]!=0 && board[index[0]][index[1]-control]!=2){
@@ -74,6 +77,7 @@ const renderCell = ({															//design for each cell
 					boolcontrol = false;
 				}
 			}
+			//check down
 			try{
 				control = 1;
 				boolcontrol = (index[0]-control>=0 && index[0]-control<8) ? true : false;
@@ -90,7 +94,7 @@ const renderCell = ({															//design for each cell
 			catch(error){
 				console.log(error);
 			}
-			//allow following cells to be used
+			//allow following cells to be used so turn their value to 2s
 			if(index[0]+1>=0 && index[0]+1<8){
 				board[index[0]+1][index[1]] = (board[index[0]+1][index[1]]==0 && board[index[0]+1][index[1]]!=1 && board[index[0]+1][index[1]]!=-1) ? 2 : board[index[0]+1][index[1]];
 			}				
@@ -123,7 +127,7 @@ const renderCell = ({															//design for each cell
 			})
 			let message = '';
 			if(end_of_game==0){
-				message = (whites>0) ? 'WHTE HAS WON' : 'BLACK HAS WON'
+				message = (whites>0) ? 'WHTE HAS WON' : 'BLACK HAS WON'						//Message for show winner
 				state = {
 					turn: true,
 					board: [[0,0,0,0,0,0,0,0],
@@ -146,7 +150,7 @@ const renderCell = ({															//design for each cell
 	return cell
 }
 
-const render = (root, state) =>{
+const render = (root, state) =>{															//Design of the page
 	const header = document.createElement('div');
 	header.style.backgroundColor='black';
 	header.style.minWidth = '330px';
@@ -209,7 +213,7 @@ const render = (root, state) =>{
 };
 
 
-const state = {
+const state = {								//State of the game. 
 	turn: true,
 	board: [[0,0,0,0,0,0,0,0],
 			[0,0,0,0,0,0,0,0],
