@@ -7,20 +7,47 @@ const renderCell = ({
 	index,
 	turn
 }) => {
-	const cell = document.createElement('div')
+	const cell = document.createElement('button')
 	cell.style.backgroundColor = '#218032'
-	cell.style.borderColor = '#1c4724'
-	cell.style.width='30px'
-	cell.style.height = '30px'
+	cell.style.borderColor = 'blac'
+	cell.style.display = 'block'
+	cell.style.borderStyle = 'solid'
+	cell.marginTop = '2px'
+	cell.marginBottom = '2px'
+	cell.marginRight = '2px'
+	cell.marginLeft = '2px'
+	cell.style.width='100%'
+	cell.style.height='37px'
 	return cell
+
+	
 
 }
 
 const render = (root, state) =>{
+	const header = document.createElement('div');
+	header.style.backgroundColor='black';
+	header.style.width = '100%';
+	header.style.height = '120px';
+
+	const header_tittle = document.createElement('h1',null,'OTHELLO');
+	header_tittle.style.backgroundColor = 'black'
+	header_tittle.style.fontSize = '40px';
+	header.appendChild(header_tittle)
+
+	const body = document.createElement('div');
+	body.style.backgroundColor = 'black'
+	body.style.width = '100%';
+	body.style.height = '850px'
+	body.style.display = 'flex';
+	body.style.justifyContent = 'center';
+	body.style.marginTop = '2px';
+
 	const board = document.createElement('div');
 	board.style.backgroundColor = 'green'
-	board.style.width = '100%';
-	board.style.padding = '10px';
+	board.style.width = '295px';
+	board.style.height = '295px';
+	board.style.marginTop = '50px';
 	
 	state.board.map((row, irow) =>
 		row.map((column,icolumn) => renderCell({
@@ -35,7 +62,10 @@ const render = (root, state) =>{
 			)
 			board.appendChild(curr_row)
 	});
-	root.appendChild(board);
+
+	body.appendChild(board);
+	root.appendChild(header);
+	root.appendChild(body);
 };
 
 
