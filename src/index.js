@@ -373,14 +373,14 @@ const render = (root, state) =>{															//Design of the page
 	currentState.style.backgroundColor = '#218032'
 	currentState.style.justifyContent = 'center'
 	currentState.style.color = 'white'
-	curr_h1.style.fontSize = '15px';
+	curr_h1.style.fontSize = '20px';
 	curr_circle.style.backgroundColor = turn;
 	curr_circle.style.borderRadius = '100px';
-	curr_circle.style.height = '7px'
-	curr_circle.style.width = '7px'
+	curr_circle.style.height = '15px'
+	curr_circle.style.width = '15px'
 	curr_circle.style.padding = '7px'
 	curr_circle.style.marginLeft = '10px'
-	curr_circle.style.marginTop = '7px'
+	curr_circle.style.marginTop = '10px'
 	currentState.appendChild(curr_h1)
 	currentState.appendChild(curr_circle)
 
@@ -412,20 +412,20 @@ const render = (root, state) =>{															//Design of the page
 	currentwinner.style.backgroundColor = '#218032'
 	currentwinner.style.justifyContent = 'center'
 	currentwinner.style.color = 'white'
-	curr_whites.style.fontSize = '15px';
-	curr_blacks.style.fontSize = '15px';
+	curr_whites.style.fontSize = '12px';
+	curr_blacks.style.fontSize = '12px';
 	white_circle.style.backgroundColor = 'white';
 	black_circle.style.backgroundColor = 'black';
 	white_circle.style.borderRadius = '100px';
 	black_circle.style.borderRadius = '100px';
-	white_circle.style.height = '7px'
-	white_circle.style.width = '7px'
+	white_circle.style.height = '5px'
+	white_circle.style.width = '5px'
 	white_circle.style.padding = '7px'
 	white_circle.style.marginLeft = '10px'
 	white_circle.style.marginRight = '10px'
 	white_circle.style.marginTop = '7px'
-	black_circle.style.height = '7px'
-	black_circle.style.width = '7px'
+	black_circle.style.height = '5px'
+	black_circle.style.width = '5px'
 	black_circle.style.padding = '7px'
 	black_circle.style.marginLeft = '10px'
 	black_circle.style.marginRight = '10px'
