@@ -41,11 +41,19 @@ const renderCell = ({															//design for each cell
 		const { board } = state;
 		if(value===2){
 			board[index[0]][index[1]] = (state.turn) ? 1 : -1;					//change color and all rows of the same color
+			//check all up pieces
 			let control = 1;
 			let boolcontrol = (index[0]+control>0 && index[0]+control<8) ? true : false;
-			//check up 
-			while(boolcontrol && board[index[0]+control][index[1]]!=board[index[0]][index[1]] && board[index[0]+control][index[1]]!=0 && board[index[0]+control][index[1]]!=2){
-				board[index[0]+control][index[1]] = board[index[0]][index[1]]
+			let toChange = [];
+			let doChangeUP = false;
+			while(boolcontrol && board[index[0]+control][index[1]]!=0 && board[index[0]+control][index[1]]!=2){
+				if(board[index[0]+control][index[1]]!=board[index[0]][index[1]]){
+					toChange.push([index[0]+control,index[1],board[index[0]][index[1]]]);	
+				}
+				else{
+					doChangeUP = (toChange.length!=0) ? true : false;
+					boolcontrol = false;
+				}
 				if (index[0]+control+1>=0 && index[0]+control+1<8){
 					control = control + 1
 				}
@@ -53,36 +61,23 @@ const renderCell = ({															//design for each cell
 					boolcontrol = false;
 				}
 			}
-			//check right
-			control = 1;
-			boolcontrol = (index[1]+control>0 && index[1]+control<8) ? true : false;
-			while(boolcontrol && board[index[0]][index[1]+control]!=board[index[0]][index[1]] && board[index[0]][index[1]+control]!=0 && board[index[0]][index[1]+control]!=2){
-				board[index[0]][index[1]+control] = board[index[0]][index[1]]
-				if (index[1]+control+1>=0 && index[1]+control+1<8){
-					control = control + 1
-				}
-				else{
-					boolcontrol = false;
-				}
+			if(doChangeUP){
+				toChange.map((myList)=> board[myList[0]][myList[1]] = myList[2])
 			}
-			//check left
-			control = 1;
-			boolcontrol = (index[1]-control>0 && index[1]-control<8) ? true : false;
-			while(boolcontrol && board[index[0]][index[1]-control]!=board[index[0]][index[1]] && board[index[0]][index[1]-control]!=0 && board[index[0]][index[1]-control]!=2){
-				board[index[0]][index[1]-control] = board[index[0]][index[1]]
-				if (index[1]-control+1>=0 && index[1]-control+1<8){
-					control = control + 1
-				}
-				else{
-					boolcontrol = false;
-				}
-			}
-			//check down
+			//check all down pieces
+			let doChangeDOWN = false;
 			try{
 				control = 1;
-				boolcontrol = (index[0]-control>=0 && index[0]-control<8) ? true : false;
-				while(boolcontrol && board[index[0]-control][index[1]]!=board[index[0]][index[1]] && board[index[0]-control][index[1]]!=0 && board[index[0]-control][index[1]]!=2){
-					board[index[0]-control][index[1]] = board[index[0]][index[1]]
+				boolcontrol = (index[0]-control>0 && index[0]-control<8) ? true : false;
+				toChange = [];
+				while(boolcontrol && board[index[0]-control][index[1]]!=0 && board[index[0]-control][index[1]]!=2){
+					if(board[index[0]-control][index[1]]!=board[index[0]][index[1]]){
+						toChange.push([index[0]-control,index[1],board[index[0]][index[1]]]);	
+					}
+					else{
+						doChangeDOWN = (toChange.length!=0) ? true : false;;
+						boolcontrol = false;
+					}
 					if (index[0]-control+1>=0 && index[0]-control+1<8){
 						control = control + 1
 					}
@@ -90,25 +85,194 @@ const renderCell = ({															//design for each cell
 						boolcontrol = false;
 					}
 				}
+				if(doChangeDOWN){
+					toChange.map((myList)=> board[myList[0]][myList[1]] = myList[2])
+				}	
 			}
-			catch(error){
-				console.log(error);
+			catch{
+				console.log('done')
 			}
-			//allow following cells to be used so turn their value to 2s
-			if(index[0]+1>=0 && index[0]+1<8){
-				board[index[0]+1][index[1]] = (board[index[0]+1][index[1]]==0 && board[index[0]+1][index[1]]!=1 && board[index[0]+1][index[1]]!=-1) ? 2 : board[index[0]+1][index[1]];
-			}				
-			if(index[0]-1>=0 && index[0]-1<8){
-				board[index[0]-1][index[1]] = (board[index[0]-1][index[1]]==0 && board[index[0]-1][index[1]]!=1 && board[index[0]-1][index[1]]!=-1) ? 2 : board[index[0]-1][index[1]];	
+			//check all left pieces
+			control = 1;
+			boolcontrol = (index[1]-control>0 && index[1]-control<8) ? true : false;
+			toChange = [];
+			let doChangeLeft = false;
+			while(boolcontrol && board[index[0]][index[1]-control]!=0 && board[index[0]][index[1]-control]!=2){
+				if(board[index[0]][index[1]-control]!=board[index[0]][index[1]]){
+					toChange.push([index[0],index[1]-control,board[index[0]][index[1]]]);	
+				}
+				else{
+					doChangeLeft = (toChange.length!=0) ? true : false;;
+					boolcontrol = false;
+				}
+				if (index[1]-control+1>=0 && index[1]-control+1<8){
+					control = control + 1
+				}
+				else{
+					boolcontrol = false;
+				}
 			}
-			if(index[1]+1>=0 && index[1]+1<8){
-				board[index[0]][index[1]+1] = (board[index[0]][index[1]+1]==0 && board[index[0]][index[1]+1]!=1 && board[index[0]][index[1]+1]!=-1) ? 2 : board[index[0]][index[1]+1];	
+			if(doChangeLeft){
+				toChange.map((myList)=> board[myList[0]][myList[1]] = myList[2])
 			}
-			if(index[1]-1>=0 && index[1]-1<8){
-				board[index[0]][index[1]-1] = (board[index[0]][index[1]-1]==0 && board[index[0]][index[1]-1]!=1 && board[index[0]][index[1]-1]!=-1) ? 2 : board[index[0]][index[1]-1];	
+			//check all right pieces
+			control = 1;
+			boolcontrol = (index[1]+control>0 && index[1]+control<8) ? true : false;
+			toChange = [];
+			let doChangeRight = false;
+			while(boolcontrol && board[index[0]][index[1]+control]!=0 && board[index[0]][index[1]+control]!=2){
+				if(board[index[0]][index[1]+control]!=board[index[0]][index[1]]){
+					toChange.push([index[0],index[1]+control,board[index[0]][index[1]]]);	
+				}
+				else{
+					doChangeRight = (toChange.length!=0) ? true : false;;
+					boolcontrol = false;
+				}
+				if (index[1]+control+1>=0 && index[1]+control+1<8){
+					control = control + 1
+				}
+				else{
+					boolcontrol = false;
+				}
 			}
-			//change turn and count pieces in the table
-			state.turn = !state.turn;
+			if(doChangeRight){
+				toChange.map((myList)=> board[myList[0]][myList[1]] = myList[2])
+			}
+			//check all down and left pieces //check all down and right pieces
+			let doChangeDownLeft = false;
+			let doChangeDownRight = false;
+			try{
+				control = 1;
+				boolcontrol = (index[0]-control>0 && index[0]-control<8 && index[1]-control>0 && index[1]-control<8) ? true : false;
+				toChange = [];
+				
+				while(boolcontrol && board[index[0]-control][index[1]-control]!=0 && board[index[0]-control][index[1]-control]!=2){
+					if(board[index[0]-control][index[1]-control]!=board[index[0]][index[1]]){
+						toChange.push([index[0]-control,index[1]-control,board[index[0]][index[1]]]);	
+					}
+					else{
+						doChangeDownLeft = (toChange.length!=0) ? true : false;;
+						boolcontrol = false;
+					}
+					if (index[0]-control+1>=0 && index[0]-control+1<8 && index[1]-control>0 && index[1]-control<8){
+						control = control + 1
+					}
+					else{
+						boolcontrol = false;
+					}
+				}
+				if(doChangeDownLeft){
+					toChange.map((myList)=> board[myList[0]][myList[1]] = myList[2])
+				}
+				
+				control = 1;
+				boolcontrol = (index[0]-control>0 && index[0]-control<8 && index[1]+control>0 && index[1]+control<8) ? true : false;
+				toChange = [];
+				
+				while(boolcontrol && board[index[0]-control][index[1]+control]!=0 && board[index[0]-control][index[1]+control]!=2){
+					if(board[index[0]-control][index[1]+control]!=board[index[0]][index[1]]){
+						toChange.push([index[0]-control,index[1]+control,board[index[0]][index[1]]]);	
+					}
+					else{
+						doChangeDownRight = (toChange.length!=0) ? true : false;;
+						boolcontrol = false;
+					}
+					if (index[0]-control+1>=0 && index[0]-control+1<8 && index[1]+control>0 && index[1]+control<8){
+						control = control + 1
+					}
+					else{
+						boolcontrol = false;
+					}
+				}
+				if(doChangeDownRight){
+					toChange.map((myList)=> board[myList[0]][myList[1]] = myList[2])
+				}	
+			}
+			catch{
+				console.log("done")
+			}
+			//check all up and right pieces
+			control = 1;
+			boolcontrol = (index[0]+control>0 && index[0]+control<8 && index[1]+control>0 && index[1]+control<8) ? true : false;
+			toChange = [];
+			let doChangeUpRight = false;
+			while(boolcontrol && board[index[0]+control][index[1]+control]!=0 && board[index[0]+control][index[1]+control]!=2){
+				if(board[index[0]+control][index[1]+control]!=board[index[0]][index[1]]){
+					toChange.push([index[0]+control,index[1]+control,board[index[0]][index[1]]]);	
+				}
+				else{
+					doChangeUpRight = (toChange.length!=0) ? true : false;;
+					boolcontrol = false;
+				}
+				if (index[0]+control+1>=0 && index[0]+control+1<8 && index[1]+control>0 && index[1]+control<8){
+					control = control + 1
+				}
+				else{
+					boolcontrol = false;
+				}
+			}
+			if(doChangeUpRight){
+				toChange.map((myList)=> board[myList[0]][myList[1]] = myList[2])
+			}
+			//check all up and left pieces
+			control = 1;
+			boolcontrol = (index[0]+control>0 && index[0]+control<8 && index[1]-control>0 && index[1]-control<8) ? true : false;
+			toChange = [];
+			let doChangeUpLeft = false;
+			while(boolcontrol && board[index[0]+control][index[1]-control]!=0 && board[index[0]+control][index[1]-control]!=2){
+				if(board[index[0]+control][index[1]-control]!=board[index[0]][index[1]]){
+					toChange.push([index[0]+control,index[1]-control,board[index[0]][index[1]]]);	
+				}
+				else{
+					doChangeUpLeft = (toChange.length!=0) ? true : false;;
+					boolcontrol = false;
+				}
+				if (index[0]+control+1>=0 && index[0]+control+1<8 && index[1]-control>0 && index[1]-control<8){
+					control = control + 1
+				}
+				else{
+					boolcontrol = false;
+				}
+			}
+			if(doChangeUpLeft){
+				toChange.map((myList)=> board[myList[0]][myList[1]] = myList[2])
+			}
+
+			const doChange = doChangeRight || doChangeLeft || doChangeDOWN || doChangeUP || doChangeUpLeft || doChangeUpRight || doChangeDownRight || doChangeDownLeft;
+			if(doChange){
+				board[index[0]][index[1]] = (state.turn) ? 1 : -1;					//change color and all rows of the same color
+				//change turn and count pieces in the table
+				state.turn = !state.turn;
+				//allow following cells to be used so turn their value to 2s
+				if(index[0]+1>=0 && index[0]+1<8){
+					board[index[0]+1][index[1]] = (board[index[0]+1][index[1]]==0 && board[index[0]+1][index[1]]!=1 && board[index[0]+1][index[1]]!=-1) ? 2 : board[index[0]+1][index[1]];
+				}				
+				if(index[0]-1>=0 && index[0]-1<8){
+					board[index[0]-1][index[1]] = (board[index[0]-1][index[1]]==0 && board[index[0]-1][index[1]]!=1 && board[index[0]-1][index[1]]!=-1) ? 2 : board[index[0]-1][index[1]];	
+				}
+				if(index[1]+1>=0 && index[1]+1<8){
+					board[index[0]][index[1]+1] = (board[index[0]][index[1]+1]==0 && board[index[0]][index[1]+1]!=1 && board[index[0]][index[1]+1]!=-1) ? 2 : board[index[0]][index[1]+1];	
+				}
+				if(index[1]-1>=0 && index[1]-1<8){
+					board[index[0]][index[1]-1] = (board[index[0]][index[1]-1]==0 && board[index[0]][index[1]-1]!=1 && board[index[0]][index[1]-1]!=-1) ? 2 : board[index[0]][index[1]-1];	
+				}
+				if(index[0]+1>=0 && index[0]+1<8 && index[1]+1>=0 && index[1]+1<8){
+					board[index[0]+1][index[1]+1] = (board[index[0]+1][index[1]+1]==0 && board[index[0]+1][index[1]+1]!=1 && board[index[0]+1][index[1]+1]!=-1) ? 2 : board[index[0]+1][index[1]+1];
+				}				
+				if(index[0]+1>=0 && index[0]+1<8 && index[1]-1>=0 && index[1]-1<8){
+					board[index[0]+1][index[1]-1] = (board[index[0]+1][index[1]-1]==0 && board[index[0]+1][index[1]-1]!=1 && board[index[0]+1][index[1]-1]!=-1) ? 2 : board[index[0]+1][index[1]-1];
+				}
+				if(index[0]-1>=0 && index[0]-1<8 && index[1]-1>=0 && index[1]-1<8){
+					board[index[0]-1][index[1]-1] = (board[index[0]-1][index[1]-1]==0 && board[index[0]-1][index[1]-1]!=1 && board[index[0]-1][index[1]-1]!=-1) ? 2 : board[index[0]-1][index[1]-1];
+				}
+				if(index[0]-1>=0 && index[0]-1<8 && index[1]-1>=0 && index[1]+1<8){
+					board[index[0]-1][index[1]+1] = (board[index[0]-1][index[1]+1]==0 && board[index[0]-1][index[1]+1]!=1 && board[index[0]-1][index[1]+1]!=-1) ? 2 : board[index[0]-1][index[1]+1];
+				}
+			}
+			else{
+				board[index[0]][index[1]] = 2;
+				alert("INVALID MOVE")
+			}
 			let whites = 0;
 			let blacks = 0;
 			let end_of_game = 0;
@@ -188,8 +352,8 @@ const render = (root, state) =>{															//Design of the page
 	body.style.minWidth = '330px';
 	body.style.height = '1000px'
 	body.style.display = 'flex';
+	header.style.flexDirection = 'column'
 	body.style.justifyContent = 'center';
-	body.style.marginTop = '2px';
 
 	const board = document.createElement('div');
 	board.style.backgroundColor = 'green'
@@ -197,7 +361,80 @@ const render = (root, state) =>{															//Design of the page
 	board.style.height = '312px';
 	board.style.marginTop = '91px';
 	board.style.overflow = 'auto'
-	
+
+	const currentState = document.createElement('div');
+	const curr_h1 = document.createElement('h1')
+	const curr_circle = document.createElement('div')
+	const turn = (state.turn) ? 'white' : 'black'
+	const currentState_textNode = document.createTextNode('turn: ' + turn)
+	currentState.style.display = 'flex'
+	currentState.style.minWidth = '330px';
+	curr_h1.appendChild(currentState_textNode)
+	currentState.style.backgroundColor = '#218032'
+	currentState.style.justifyContent = 'center'
+	currentState.style.color = 'white'
+	curr_h1.style.fontSize = '15px';
+	curr_circle.style.backgroundColor = turn;
+	curr_circle.style.borderRadius = '100px';
+	curr_circle.style.height = '7px'
+	curr_circle.style.width = '7px'
+	curr_circle.style.padding = '7px'
+	curr_circle.style.marginLeft = '10px'
+	curr_circle.style.marginTop = '7px'
+	currentState.appendChild(curr_h1)
+	currentState.appendChild(curr_circle)
+
+	let whites = 0;
+	let blacks = 0;
+	state.board.map((row,irow) => {
+		row.map((column,icolumn) => {
+			if(column==1){
+				whites = whites + 1;
+			}
+			else if(column==-1){
+				blacks = blacks + 1;
+			}
+		})
+	})
+
+	const currentwinner = document.createElement('div');
+	const curr_whites = document.createElement('h1')
+	const curr_blacks = document.createElement('h1')
+	const white_circle = document.createElement('div')
+	const black_circle = document.createElement('div')
+	const white_textNode = document.createTextNode(whites)
+	const black_textNode = document.createTextNode(blacks)
+	currentwinner.style.display = 'flex'
+	currentwinner.style.marginTop = '2px';
+	currentwinner.style.minWidth = '330px';
+	curr_whites.appendChild(white_textNode)
+	curr_blacks.appendChild(black_textNode)
+	currentwinner.style.backgroundColor = '#218032'
+	currentwinner.style.justifyContent = 'center'
+	currentwinner.style.color = 'white'
+	curr_whites.style.fontSize = '15px';
+	curr_blacks.style.fontSize = '15px';
+	white_circle.style.backgroundColor = 'white';
+	black_circle.style.backgroundColor = 'black';
+	white_circle.style.borderRadius = '100px';
+	black_circle.style.borderRadius = '100px';
+	white_circle.style.height = '7px'
+	white_circle.style.width = '7px'
+	white_circle.style.padding = '7px'
+	white_circle.style.marginLeft = '10px'
+	white_circle.style.marginRight = '10px'
+	white_circle.style.marginTop = '7px'
+	black_circle.style.height = '7px'
+	black_circle.style.width = '7px'
+	black_circle.style.padding = '7px'
+	black_circle.style.marginLeft = '10px'
+	black_circle.style.marginRight = '10px'
+	black_circle.style.marginTop = '7px'
+	currentwinner.appendChild(white_circle)
+	currentwinner.appendChild(curr_whites)
+	currentwinner.appendChild(black_circle)
+	currentwinner.appendChild(curr_blacks)
+
 	state.board.map((row, irow) =>
 		row.map((column,icolumn) => renderCell({
 			value: column,
@@ -214,6 +451,8 @@ const render = (root, state) =>{															//Design of the page
 
 	body.appendChild(board);
 	root.appendChild(header);
+	root.appendChild(currentState);
+	root.appendChild(currentwinner);
 	root.appendChild(body);
 };
 
