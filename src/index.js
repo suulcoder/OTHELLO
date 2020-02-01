@@ -314,6 +314,9 @@ const renderCell = ({															//design for each cell
 			root.innerHTML = '';
         	render(root, state);//Restart the game
 		}
+		else{
+			alert("INVALID MOVE")
+		}
 	};
 	cell.appendChild(piece)
 	return cell
