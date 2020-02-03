@@ -209,7 +209,8 @@ const renderCell = ({															//design for each cell
 		piece.style.backgroundColor = 'black'
 	}
 	if(doChange && value===2){
-		piece.style.borderColor = 'black'	
+		piece.style.borderColor = 'black'
+		piece.style.borderStyle = 'solid'	
 	}
 	
 
