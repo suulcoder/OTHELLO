@@ -55,7 +55,8 @@ const renderCell = ({															//design for each cell
 	let doChangeDownLeft = false;
 	const toChangeDown = [];
 	const toChangeDownLeft = [];
-
+	const toChangeDownRight = [];
+	let doChangeDownRight = false;
 	try{
 		control = 1;
 		boolcontrol = (index[0]-control>0 && index[0]-control<8) ? true : false;
@@ -87,6 +88,24 @@ const renderCell = ({															//design for each cell
 				boolcontrol = false;
 			}
 			if (index[0]-control+1>=0 && index[0]-control+1<8 && index[1]-control>0 && index[1]-control<8){
+				control = control + 1
+			}
+			else{
+				boolcontrol = false;
+			}
+		}
+		//check all down and right pieces
+	 	control = 1;
+		boolcontrol = (index[0]-control>0 && index[0]-control<8 && index[1]+control>0 && index[1]+control<8) ? true : false;
+		while(boolcontrol && board[index[0]-control][index[1]+control]!==0 && board[index[0]-control][index[1]+control]!==2){
+			if(board[index[0]-control][index[1]+control]!==myTurn){
+				toChangeDownRight.push([index[0]-control,index[1]+control,myTurn]);	
+			}
+			else{
+				doChangeDownRight = (toChangeDownRight.length!==0) ? true : false;
+				boolcontrol = false;
+			}
+			if (index[0]-control+1>=0 && index[0]-control+1<8 && index[1]+control>0 && index[1]+control<8){
 				control = control + 1
 			}
 			else{
@@ -172,27 +191,6 @@ const renderCell = ({															//design for each cell
 			boolcontrol = false;
 		}
 		if (index[0]+control+1>=0 && index[0]+control+1<8 && index[1]-control>0 && index[1]-control<8){
-			control = control + 1
-		}
-		else{
-			boolcontrol = false;
-		}
-	}
-
-	//check all down and right pieces
- 	control = 1;
-	boolcontrol = (index[0]-control>0 && index[0]-control<8 && index[1]+control>0 && index[1]+control<8) ? true : false;
-	const toChangeDownRight = [];
-	let doChangeDownRight = false;
-	while(boolcontrol && board[index[0]-control][index[1]+control]!==0 && board[index[0]-control][index[1]+control]!==2){
-		if(board[index[0]-control][index[1]+control]!==myTurn){
-			toChangeDownRight.push([index[0]-control,index[1]+control,myTurn]);	
-		}
-		else{
-			doChangeDownRight = (toChangeDownRight.length!==0) ? true : false;
-			boolcontrol = false;
-		}
-		if (index[0]-control+1>=0 && index[0]-control+1<8 && index[1]+control>0 && index[1]+control<8){
 			control = control + 1
 		}
 		else{
@@ -358,7 +356,7 @@ const render = (root, state) =>{															//Design of the page
 	const body = document.createElement('div');
 	body.style.backgroundColor = 'black'
 	body.style.minWidth = '330px';
-	body.style.height = '1000px'
+	body.style.height = '450px'
 	body.style.display = 'flex';
 	header.style.flexDirection = 'column'
 	body.style.justifyContent = 'center';
@@ -406,6 +404,15 @@ const render = (root, state) =>{															//Design of the page
 		})
 		return null
 	})
+
+	if(whites===0 && state.turn){
+		state.turn = false
+		alert("BLACKS HAS NO LOGER PLAYS, WHITES TURN")
+	}
+	if(blacks===0 && state.turn===false){
+		state.turn = true
+		alert("WHITES HAS NO LONGER PLAYS,BLACKS TURN")
+	}
 
 	const currentwinner = document.createElement('div');
 	const curr_whites = document.createElement('h1')
@@ -460,11 +467,45 @@ const render = (root, state) =>{															//Design of the page
 			return null
 	});
 
+	const restart_button =document.createElement('div');
+	restart_button.style.backgroundColor = 'black';
+	restart_button.style.display = 'flex';
+	restart_button.style.justifyContent = 'center';
+	restart_button.style.height = '500px'
+	restart_button.style.minWidth = '330px';
+
+	const restart = document.createElement('button');
+	restart.style.backgroundColor = '#218032';
+	restart.style.color = 'white'
+	restart.style.width = '190px';
+	restart.style.height = '35px';
+    restart.style.fontSize = '20px';
+    restart.style.marginTop = '20px'
+    restart.innerText = 'RESTART GAME';
+    restart_button.appendChild(restart)
+    restart.onclick = () => {
+    	state = {
+			turn: true,
+			board: [[0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0],
+					[0,0,0,2,2,0,0,0],
+					[0,0,2,1,-1,2,0,0],
+					[0,0,2,-1,1,2,0,0],
+					[0,0,0,2,2,0,0,0],
+					[0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0]
+				]
+		}
+		root.innerHTML = '';
+		render(root,state)
+    }
+
 	body.appendChild(board);
 	root.appendChild(header);
 	root.appendChild(currentState);
-	root.appendChild(currentwinner);
+	root.appendChild(currentwinner);	
 	root.appendChild(body);
+	root.appendChild(restart_button);
 };
 
 
