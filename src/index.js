@@ -233,7 +233,7 @@ const renderCell = ({															//design for each cell
 				toChangeDownLeft.map((myList)=> board[myList[0]][myList[1]] = myList[2])
 			}
 			if(doChangeDownRight){
-				toChangeRight.map((myList)=> board[myList[0]][myList[1]] = myList[2])
+				toChangeDownRight.map((myList)=> board[myList[0]][myList[1]] = myList[2])
 			}	
 			if(doChangeUpRight){
 				toChangeUpRight.map((myList)=> board[myList[0]][myList[1]] = myList[2])
