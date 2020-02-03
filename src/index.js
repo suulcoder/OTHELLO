@@ -37,7 +37,7 @@ const renderCell = ({															//design for each cell
 
 	while(boolcontrol && board[index[0]+control][index[1]]!=0 && board[index[0]+control][index[1]]!=2){
 		if(board[index[0]+control][index[1]]!=myTurn){
-			toChangeUp.push([index[0]+control,index[1],board[index[0]][index[1]]]);	
+			toChangeUp.push([index[0]+control,index[1],myTurn]);	
 		}
 		else{
 			doChangeUP = (toChangeUp.length!=0) ? true : false;
@@ -50,7 +50,6 @@ const renderCell = ({															//design for each cell
 			boolcontrol = false;
 		}
 	}
-
 	//check all down pieces
 	let doChangeDOWN = false;
 	let doChangeDownRight = false;
@@ -64,7 +63,7 @@ const renderCell = ({															//design for each cell
 		boolcontrol = (index[0]-control>0 && index[0]-control<8) ? true : false;
 		while(boolcontrol && board[index[0]-control][index[1]]!=0 && board[index[0]-control][index[1]]!=2){
 			if(board[index[0]-control][index[1]]!=myTurn){
-				toChangeDown.push([index[0]-control,index[1],board[index[0]][index[1]]]);	
+				toChangeDown.push([index[0]-control,index[1],myTurn]);	
 			}
 			else{
 				doChangeDOWN = (toChangeDown.length!=0) ? true : false;;
@@ -83,7 +82,7 @@ const renderCell = ({															//design for each cell
 		boolcontrol = (index[0]-control>0 && index[0]-control<8 && index[1]-control>0 && index[1]-control<8) ? true : false;		
 		while(boolcontrol && board[index[0]-control][index[1]-control]!=0 && board[index[0]-control][index[1]-control]!=2){
 			if(board[index[0]-control][index[1]-control]!=myTurn){
-				toChangeDownLeft.push([index[0]-control,index[1]-control,board[index[0]][index[1]]]);	
+				toChangeDownLeft.push([index[0]-control,index[1]-control,myTurn]);	
 			}
 			else{
 				doChangeDownLeft = (toChangeDownLeft.length!=0) ? true : false;;
@@ -101,7 +100,7 @@ const renderCell = ({															//design for each cell
 		boolcontrol = (index[0]-control>0 && index[0]-control<8 && index[1]+control>0 && index[1]+control<8) ? true : false;
 		while(boolcontrol && board[index[0]-control][index[1]+control]!=0 && board[index[0]-control][index[1]+control]!=2){
 			if(board[index[0]-control][index[1]+control]!=myTurn){
-				toChangeDownRight.push([index[0]-control,index[1]+control,board[index[0]][index[1]]]);	
+				toChangeDownRight.push([index[0]-control,index[1]+control,myTurn]);	
 			}
 			else{
 				doChangeDownRight = (toChangeDownRight.length!=0) ? true : false;;
@@ -126,7 +125,7 @@ const renderCell = ({															//design for each cell
 	let doChangeLeft = false;
 	while(boolcontrol && board[index[0]][index[1]-control]!=0 && board[index[0]][index[1]-control]!=2){
 		if(board[index[0]][index[1]-control]!=myTurn){
-			toChangeLeft.push([index[0],index[1]-control,board[index[0]][index[1]]]);	
+			toChangeLeft.push([index[0],index[1]-control,myTurn]);	
 		}
 		else{
 			doChangeLeft = (toChangeLeft.length!=0) ? true : false;;
@@ -146,7 +145,7 @@ const renderCell = ({															//design for each cell
 	let doChangeRight = false;
 	while(boolcontrol && board[index[0]][index[1]+control]!=0 && board[index[0]][index[1]+control]!=2){
 		if(board[index[0]][index[1]+control]!=myTurn){
-			toChangeRight.push([index[0],index[1]+control,board[index[0]][index[1]]]);	
+			toChangeRight.push([index[0],index[1]+control,myTurn]);	
 		}
 		else{
 			doChangeRight = (toChangeRight.length!=0) ? true : false;;
@@ -159,7 +158,6 @@ const renderCell = ({															//design for each cell
 			boolcontrol = false;
 		}
 	}
-
 	//check all up and right pieces
 	control = 1;
 	boolcontrol = (index[0]+control>0 && index[0]+control<8 && index[1]+control>0 && index[1]+control<8) ? true : false;
@@ -167,7 +165,7 @@ const renderCell = ({															//design for each cell
 	let doChangeUpRight = false;
 	while(boolcontrol && board[index[0]+control][index[1]+control]!=0 && board[index[0]+control][index[1]+control]!=2){
 		if(board[index[0]+control][index[1]+control]!=myTurn){
-			toChangeUpRight.push([index[0]+control,index[1]+control,board[index[0]][index[1]]]);	
+			toChangeUpRight.push([index[0]+control,index[1]+control,myTurn]);	
 		}
 		else{
 			doChangeUpRight = (toChangeUpRight.length!=0) ? true : false;;
@@ -187,7 +185,7 @@ const renderCell = ({															//design for each cell
 	let doChangeUpLeft = false;
 	while(boolcontrol && board[index[0]+control][index[1]-control]!=0 && board[index[0]+control][index[1]-control]!=2){
 		if(board[index[0]+control][index[1]-control]!=myTurn){
-			toChangeUpLeft.push([index[0]+control,index[1]-control,board[index[0]][index[1]]]);	
+			toChangeUpLeft.push([index[0]+control,index[1]-control,myTurn]);	
 		}
 		else{
 			doChangeUpLeft = (toChangeUpLeft.length!=0) ? true : false;;
